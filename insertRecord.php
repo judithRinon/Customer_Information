@@ -10,14 +10,26 @@ if(isset($_POST["Contact_Number"])) {
         $pdo = new PDO($servername, $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $pdo->prepare("SELECT * FROM customerdata WHERE ContactNumber = :ContactNumber OR FirstName = :FirstName OR Email = :Email");
+        $stmt = $pdo->prepare("SELECT * FROM customerdata WHERE 
+            ContactNumber = :ContactNumber OR 
+            FirstName = :FirstName OR 
+            Email = :Email"
+        );
+
         $stmt->bindValue(':ContactNumber', $contactNumber, PDO::PARAM_STR);
         $stmt->bindValue(':FirstName', $firstName, PDO::PARAM_STR);
         $stmt->bindValue(':Email', $email, PDO::PARAM_STR);
         $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            echo json_encode(array("status" => "error", "message" => "The data you input is already exists in the database."));
+        
+        $rowCount = $stmt->rowCount();
+        if ($rowCount > 1) {
+            // Fetch all patient IDs
+            $patientIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            echo json_encode(array("status" => "error", "message" => "Multiple records found", "patientIds" => $patientIds));
+            exit;
+        } elseif ($rowCount > 0) {
+            $patientId = $stmt->fetch(PDO::FETCH_COLUMN);
+            echo json_encode(array("status" => "error", "message" => "Duplicate record found", "patientId" => $patientId));
             exit;
         }
     } catch(PDOException $e) {
@@ -45,7 +57,9 @@ try {
     $stmt->bindValue(':Email', $_POST["Email"], PDO::PARAM_STR);
     $stmt->execute();
 
-    echo json_encode(array("status" => "success", "message" => "Data successfully added"));
+    $patientId = $pdo->lastInsertId();
+
+    echo json_encode(array("status" => "success", "message" => "Data successfully added", "patientId" => $patientId));
 } catch(PDOException $e) {
     echo json_encode(array("status" => "error", "message" => $e->getMessage()));
 }
