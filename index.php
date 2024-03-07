@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- CSS -->
 	<link rel="stylesheet" href="style.css">
-</head>
-<body>
+</head> 
+<body> 
     <!-- HOMEPAGE -->
     <div class="container" id="homePage">
         <div id="header">
@@ -55,27 +55,28 @@
               <h2 class="text-uppercase text-center mb-5">Patient Information Form</h2>
                 <div class="form-outline mb-4">
                   <label for="First_Name">First Name:</label><br>
-                  <input type="text" id="First_Name" name="First_Name" class="form-control form-control-lg">
+                  <input type="text" id="First_Name" name="First_Name" class="form-control form-control-lg" placeholder="Your First name.." required>
                 </div>
                 <div class="form-outline mb-4">
                   <label for="Middle_Name">Middle Name:</label><br>
-                  <input type="text" id="Middle_Name" name="Middle_Name" class="form-control form-control-lg">
+                  <input type="text" id="Middle_Name" name="Middle_Name" class="form-control form-control-lg" placeholder="Your Middle name.." required>
                 </div>
                 <div class="form-outline mb-4">
                     <label for="Sur_Name">Last Name:</label><br>
-                    <input type="text" id="Sur_Name" name="Sur_Name" class="form-control form-control-lg">
+                    <input type="text" id="Sur_Name" name="Sur_Name" class="form-control form-control-lg" placeholder="Your Last name.." required>
                 </div>
                 <div class="form-outline mb-4">
                     <label for="Birthdate">Birthdate:</label><br>
-                    <input type="date" id="Birthdate" name="Birthdate" class="form-control form-control-lg">
+                    <input type="date" id="Birthdate" name="Birthdate" class="form-control form-control-lg" required>
                 </div>
                 <div class="form-outline mb-4">
                     <label for="Contact_Number">Contact Number:</label><br>
-                    <input type="tel" id="Contact_Number" name="Contact_Number" pattern="[0-9]*" title="Please enter a valid 11-digit number" class="form-control form-control-lg" required>
+                    <input type="tel" id="Contact_Number" name="Contact_Number" class="form-control form-control-lg" placeholder="Your contact number.." maxlength="11" oninput="validateContactNumber(this)" pattern="[0-9]{11}" title="Please enter exactly 11 digits." required>
+                    <span id="error_message" style="color: red;font-size:12px;position:absolute;"></span>
                 </div>
                 <div class="form-outline mb-4">
                     <label for="email">Email:</label><br>
-                    <input type="email" id="Email" name="Email" class="form-control form-control-lg">
+                    <input type="email" id="Email" name="Email" class="form-control form-control-lg" placeholder="Your email.." required>
                 </div>
                 <div class="d-flex justify-content-center">
                   <button type="button"

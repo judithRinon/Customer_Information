@@ -23,7 +23,6 @@ if(isset($_POST["Contact_Number"])) {
         
         $rowCount = $stmt->rowCount();
         if ($rowCount > 1) {
-            // Fetch all patient IDs
             $patientIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
             echo json_encode(array("status" => "error", "message" => "Multiple records found", "patientIds" => $patientIds));
             exit;
