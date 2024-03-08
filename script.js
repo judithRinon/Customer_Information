@@ -1,9 +1,10 @@
-/*===== NEXT BUTTON IN HOMEPAGE===== }*/
+/*===== SEARCH BUTTON IN HOMEPAGE===== }*/
 function showPatientInfoForm() {
     document.getElementById('newPatientForm').style.display = 'block';
     document.getElementById('homePage').style.display = 'none';
 }
-/*===== BACK BUTTON IN HOMEPAGE FROM newPatientForm ===== */
+
+/*===== BACK BUTTON ===== */
 document.getElementById('backHomepage').addEventListener('click', function() {
     var confirmation = confirm("Are you sure you want to leave? Any actions made will not be saved.");
     if (confirmation) {
@@ -11,13 +12,66 @@ document.getElementById('backHomepage').addEventListener('click', function() {
         document.getElementById('homePage').style.display = 'block';
     }
 });
-$(document).on('click','#confirmation',function(){
+
+/*===== SUBMIT BUTTON ===== */
+$(document).on('click', '#confirmation', function() {
     const popup = document.querySelector('.popup');
-    popup.classList.add('active');
-    //alert("lalabas")
+    // Get values from input fields
+    var First_Name = $("#First_Name").val();
+    var Middle_Name = $("#Middle_Name").val();
+    var Sur_Name = $("#Sur_Name").val();
+    var Birthdate = $("#Birthdate").val();
+    var Contact_Number = $("#Contact_Number").val();
+    var Email = $("#Email").val();
+
+    // Email validation
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(Email)) {
+        $('#emailError').text('Please enter a valid email address.');
+        return;
+    } else {
+        $('#emailError').text('');
+    }
+
+    if (!First_Name || !Middle_Name || !Sur_Name || !Birthdate || !Contact_Number || !Email) {
+        alert('Please fill in all fields.');
+        return;
+    } else {
+        popup.classList.add('active');
+    }
 });
+
+/*===== POPUP Close button ===== */
+$('#close-popup').on('click', function() {
+    $('.popup').removeClass('active');
+});
+
+/*===== Check for special characters except ñ and é ===== */
+function validateSpecialCharacters(input) {
+    var regex = /^[a-zA-ZñÑéÉ\s]+$/;
+    return regex.test(input);
+}
+
+/*===== Function to validate all fields before submission ===== */
+function validateForm() {
+    var First_Name = $("#First_Name").val();
+    var Middle_Name = $("#Middle_Name").val();
+    var Sur_Name = $("#Sur_Name").val();
+
+    if (!validateSpecialCharacters(First_Name) || !validateSpecialCharacters(Middle_Name) || !validateSpecialCharacters(Sur_Name)) {
+        alert('Fields cannot contain special characters except for ñ and é.');
+        return false;
+    }
+    return true;
+}
+
 /*===== SUBMIT BUTTON IN newPatientForm ===== */
 $(document).on('click','#submitBtn',function(){
+
+    if (!validateForm()) {
+        return;
+    }
+
     var First_Name = $("#First_Name").val();
     var Middle_Name = $("#Middle_Name").val();
     var Sur_Name = $("#Sur_Name").val();
@@ -25,7 +79,9 @@ $(document).on('click','#submitBtn',function(){
     var Contact_Number = $("#Contact_Number").val();
     var Email = $("#Email").val();
    
+    
     $('.popup').removeClass('active');
+
     //alert("lalabas")
     $.ajax({ 
         type: 'post',
@@ -43,6 +99,7 @@ $(document).on('click','#submitBtn',function(){
             if (response.status === "success") {
                 $('#myModal').modal('show');
                 $('#modalPatientId').val(response.patientId);
+                // Clear fields after submit
                 $('#First_Name').val('');
                 $('#Middle_Name').val('');
                 $('#Sur_Name').val('');
@@ -67,15 +124,12 @@ $(document).on('click','#submitBtn',function(){
     });
 });
 
-$('#close-popup').on('click', function() {
-    $('.popup').removeClass('active');
-});
 /*===== ContactNumber Validation ===== */
 function validateContactNumber(input) {
     var contactNumber = input.value.replace(/\D/g, ''); // Remove non-digit characters
     if (contactNumber.length !== 11) {
-        document.getElementById("error_message").innerText = "Please enter only numbers.";
-        input.setCustomValidity("Please enter only numbers.");
+        document.getElementById("error_message").innerText = "Please enter only numbers and enter exactly 11 digits.";
+        input.setCustomValidity("Please enter only numbers and enter exactly 11 digits.");
     } else {
         document.getElementById("error_message").innerText = "";
         input.setCustomValidity("");
