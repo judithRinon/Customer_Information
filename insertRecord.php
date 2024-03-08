@@ -3,22 +3,37 @@ require 'config.php';
 
 if(isset($_POST["Contact_Number"])) {
     $contactNumber = $_POST["Contact_Number"];
-    $firstName = $_POST["First_Name"];
+    $FirstName = $_POST["First_Name"];
+    $SurName = $_POST["Sur_Name"];
     $email = $_POST["Email"];
+    $Birthdate = $_POST["Birthdate"];
 
     try {
         $pdo = new PDO($servername, $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $pdo->prepare("SELECT * FROM customerdata WHERE 
-            ContactNumber = :ContactNumber OR 
-            FirstName = :FirstName OR 
-            Email = :Email"
-        );
+        $stmt = $pdo->prepare("SELECT * FROM customerdata a WHERE (
+            a.FirstName = :FirstName AND a.Surname = :SurName AND a.Birthdate = :Birthdate
+          ) OR (
+            a.FirstName = :FirstName AND a.Surname = :SurName AND a.ContactNumber = :ContactNumber
+          )
+          OR (
+            a.FirstName = :FirstName AND a.Surname = :SurName AND a.Birthdate = :Birthdate AND a.ContactNumber = :ContactNumber
+          )
+          OR (
+             a.Surname = :SurName AND a.ContactNumber = :ContactNumber AND a.Birthdate = :Birthdate
+          )
+          OR (
+             a.FirstName = :FirstName AND a.ContactNumber = :ContactNumber AND a.Birthdate = :Birthdate
+          )
+          
+          ");
+
 
         $stmt->bindValue(':ContactNumber', $contactNumber, PDO::PARAM_STR);
-        $stmt->bindValue(':FirstName', $firstName, PDO::PARAM_STR);
-        $stmt->bindValue(':Email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':SurName', $SurName, PDO::PARAM_STR);
+        $stmt->bindValue(':FirstName', $FirstName, PDO::PARAM_STR);
+        $stmt->bindValue(':Birthdate', $Birthdate, PDO::PARAM_STR);
         $stmt->execute();
         
         $rowCount = $stmt->rowCount();
