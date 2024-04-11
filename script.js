@@ -74,9 +74,10 @@ $(document).on('click', '#submitBtn', function() {
 
   var formData = {
     First_Name: $("#First_Name").val(),
+    Middle_Name: $("#Middle_Name").val(),
     Sur_Name: $("#Sur_Name").val(),
     Mobile_Phone_No: $("#Contact_Number").val(),
-    eMail: $("#eMail").val(),
+    eMail: $("#Email").val(),
   };
   $('.popup').removeClass('active');
   console.log($("#Contact_Number").val());
@@ -91,14 +92,28 @@ $(document).on('click', '#submitBtn', function() {
       if (response.hasOwnProperty('status')) {
         if (response.status === "exists") {
           const recordCount = response.hasOwnProperty('recordCount') ? response.recordCount : 0;
-          if (recordCount > 2) {
+          if (recordCount > 1) {
+            $('#myModal2').modal('show');
+          } else {
             $('#myModal1').modal('show');
             $('#modalPatientId1').val(response.patientId);
-          } else if (recordCount < 1){
-            $('#myModal2').modal('show');
           }
         } else if (response.status === "not_exists") {
-          $('#myModal').modal('show');
+          $.ajax({
+            type: 'post',
+            url: 'api_post.php',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+              console.log(response);
+              $('#myModal').modal('show');
+              $('#modalPatientId').val(response.accountNo);
+            },
+            error: function(xhr, status, error) {
+              console.error('Error:', error);
+              alert('An error occurred while processing the request.');
+            }
+          });
         }
       } else {
         alert("Unexpected response format.");
