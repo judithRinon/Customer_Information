@@ -54,11 +54,11 @@ function validateSpecialCharacters(input) {
 
 /*===== Function to validate all fields before submission ===== */
 function validateForm() {
-    var First_Name = $("#First_Name").val();
+    //var First_Name = $("#First_Name").val();
     var Middle_Name = $("#Middle_Name").val();
     var Sur_Name = $("#Sur_Name").val();
 
-    if (!validateSpecialCharacters(First_Name) || !validateSpecialCharacters(Middle_Name) || !validateSpecialCharacters(Sur_Name)) {
+    if ( !validateSpecialCharacters(Middle_Name) || !validateSpecialCharacters(Sur_Name)) {
         alert('Fields cannot contain special characters except for ñ and é.');
         return false;
     }
@@ -66,64 +66,52 @@ function validateForm() {
 }
 
 /*===== SUBMIT BUTTON IN newPatientForm ===== */
-$(document).on('click','#submitBtn',function(){
+$(document).on('click', '#submitBtn', function() {
 
-    if (!validateForm()) {
-        return;
-    }
+  if (!validateForm()) {
+    return;
+  }
 
-    var First_Name = $("#First_Name").val();
-    var Middle_Name = $("#Middle_Name").val();
-    var Sur_Name = $("#Sur_Name").val();
-    var Birthdate = $("#Birthdate").val();
-    var Contact_Number = $("#Contact_Number").val();
-    var Email = $("#Email").val();
-   
-    
-    $('.popup').removeClass('active');
-
-    //alert("lalabas")
-    $.ajax({ 
-        type: 'post',
-        url: 'insertRecord.php',
-        data:{
-            First_Name: First_Name,
-            Middle_Name: Middle_Name,
-            Sur_Name: Sur_Name,
-            Birthdate: Birthdate,
-            Contact_Number: Contact_Number,
-            Email: Email
-        },
-        success: function(data){
-            var response = JSON.parse(data);
-            if (response.status === "success") {
-                $('#myModal').modal('show');
-                $('#modalPatientId').val(response.patientId);
-                // Clear fields after submit
-                $('#First_Name').val('');
-                $('#Middle_Name').val('');
-                $('#Sur_Name').val('');
-                $('#Birthdate').val('');
-                $('#Contact_Number').val('');
-                $('#Email').val('');
-            } else {
-                if (response.message.includes("Multiple records found")) {
-                    $('#myModal2').modal('show');
-                } else if (response.message.includes("Duplicate record found")) {
-                    $('#myModal1').modal('show');
-                    $('#modalPatientId1').val(response.patientId);
-                } else {
-                    alert("Error: " + response.message);
-                }
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            alert('An error occurred while processing the request.');
+  var formData = {
+    First_Name: $("#First_Name").val(),
+    Sur_Name: $("#Sur_Name").val(),
+    Mobile_Phone_No: $("#Contact_Number").val(),
+    eMail: $("#eMail").val(),
+  };
+  $('.popup').removeClass('active');
+  console.log($("#Contact_Number").val());
+  console.log($("#First_Name").val());
+  $.ajax({
+    type: 'get',
+    url: 'api_get.php',
+    data: formData,
+    dataType: 'json',
+    success: function(response) {
+      console.log(response);
+      if (response.hasOwnProperty('status')) {
+        if (response.status === "exists") {
+          const recordCount = response.hasOwnProperty('recordCount') ? response.recordCount : 0;
+          if (recordCount > 2) {
+            $('#myModal1').modal('show');
+            $('#modalPatientId1').val(response.patientId);
+          } else if (recordCount < 1){
+            $('#myModal2').modal('show');
+          }
+        } else if (response.status === "not_exists") {
+          $('#myModal').modal('show');
         }
-    });
+      } else {
+        alert("Unexpected response format.");
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error('Error:', error);
+      alert('An error occurred while processing the request.');
+    }
+  });
 });
 
+  
 /*===== ContactNumber Validation ===== */
 function validateContactNumber(input) {
     var contactNumber = input.value.replace(/\D/g, ''); // Remove non-digit characters
