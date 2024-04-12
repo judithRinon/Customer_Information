@@ -13,29 +13,27 @@
     <!-- HOMEPAGE -->
     <div class="container" id="homePage">
         <div id="header">
-            <img src="img/hobli.png" />
-            <h1>Welcome to HOBLI</h1>
+            <img src="img/hobli.png" /> <br>
             <p> <?php
                 date_default_timezone_set("Asia/Manila");
                 echo "Date and Time <br> " . date("m/d/Y  h:i:sa");
             ?> </p>
+             <h1>Welcome to Vision Express</h1>
         </div>
         <div>
-          <p>Let us Begin!</p>
-          <button class="btn btn-primary" onclick="showPatientInfoForm()">Search</button>
+          <button class="btn btn-primary" onclick="showPatientInfoForm()">Let us Begin!</button>
         </div>
     </div>
     <!-- PATIENT REGISTRATION FORM -->
     <div class="container h-100" id="newPatientForm" style="display:none;">
-    <div id="header">
+    <div id="infoHeader" >
             <img src="img/hobli.png" />
-            <h1>Patient Information</h1>
             <p> <?php
                 date_default_timezone_set("Asia/Manila");
                 echo "Date and Time <br> " . date("m/d/Y  h:i:sa");
             ?> </p>
         </div>
-        <div class="card" style="border-radius: 15px;margin-top: 20px;width:30rem;">
+        <div class="card">
             <div class="card-body">
             <h2 class="text-uppercase text-center mb-5">Patient Information Form</h2>
                 <div class="form-outline mb-4">
@@ -64,13 +62,11 @@
                     <input type="email" id="Email" name="Email" class="form-control form-control-lg" placeholder="Your email.." required>
                     <span class="error" id="emailError" style="color: red; font-size: 12px;"></span>
                 </div>
-                <div class="d-flex justify-content-center">
-                <button type="submit"
-                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" id="confirmation">Submit</button>
+                <div class="d-flex justify-content-center mb-2">
+                    <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" id="confirmation">Submit</button>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button type="button"
-                    class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body" id="backHomepage">Back</button>
+                    <button type="button" class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body" id="backHomepage">Back</button>
                 </div>
             </div>
         </div>
@@ -119,14 +115,34 @@
             </div>
         </div>
     </div>
+        <!--  MODAL MULTIPLE RECORD  -->
+    <div class="modal" id="myModal3" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <p style="text-align:center;">Our apologies that we are unable to process your request at the moment. <br>
+                    Please contact Store Personnel for futher assistance.
+                </p>
+            </div>
+        </div>
+    </div>
     <!--  POPUP MESSAGE  -->
     <div class="popup">
         <div class="popup-container">
-        <p>Do you want to submit your record?</p>
-        <button type="button" class="btn btn-primary" id="submitBtn">Yes</button>
-        <button type="button" class="btn btn-secondary" id="close-popup">No</button>
+            <p>Do you want to submit your record?</p>
+            <button type="button" class="btn btn-primary" id="submitBtn">Yes</button>
+            <button type="button" class="btn btn-secondary" id="close-popup">No</button>
+        </div>
     </div>
 
+    <div id='loader'>
+      <img src='img/loader.gif'> <b>Loading..</b>
+    </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

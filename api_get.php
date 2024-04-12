@@ -1,11 +1,11 @@
 <?php
 
+sleep(5); // sleep for 5 seconds
 $clientId = 'aad53ff7-dfe5-422f-ad2b-d42d9e1400ec';
 $clientSecret = 'hNH8Q~3pqrW1LXpGrMTAoUG8AaaG~zA96NoICbFW';
 $scope = 'https://api.businesscentral.dynamics.com/.default';
 $accessTokenUrl = 'https://login.microsoftonline.com/49f4f8df-cda6-43d8-bc84-f4a827a6536f/oauth2/v2.0/token';
 
-// First, obtain the access token
 $requestBody = [
     'grant_type' => 'client_credentials',
     'client_id' => $clientId,
@@ -39,11 +39,10 @@ if (isset($tokenResponse->error)) {
 
 $accessToken = $tokenResponse->access_token;
 
-// Get the input First_Name value from the request
 $firstName = isset($_GET['First_Name']) ? strtolower($_GET['First_Name']) : "";
 $surName = isset($_GET['Sur_Name']) ? strtolower($_GET['Sur_Name']) : "";
 $mobilePhoneNo = isset($_GET['Mobile_Phone_No']) ? $_GET['Mobile_Phone_No'] : "";
-// If First_Name is empty, return an error
+
 if (empty($firstName) || empty($mobilePhoneNo) || empty($surName)) {
     echo json_encode(array('status' => 'error', 'message' => 'Mobile Phone Number is required.'));
     exit;
@@ -70,10 +69,6 @@ if ($error) {
 // Process API response
 $apiData = json_decode($apiResponse, true);
 
-// Check if any data is returned
-// Check if any data is returned
-// Check if any data is returned
-// Check if any data is returned
 if (!empty($apiData['value'])) {
     $recordCount = 0;
   
@@ -106,7 +101,5 @@ if (!empty($apiData['value'])) {
 } else {
     echo json_encode(array('status' => 'no_data', 'message' => 'No data found from the API.'));
 }
-
-
 
 ?>

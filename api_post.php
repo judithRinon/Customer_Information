@@ -6,7 +6,6 @@ $scope = 'https://api.businesscentral.dynamics.com/.default';
 $accessTokenUrl = 'https://login.microsoftonline.com/49f4f8df-cda6-43d8-bc84-f4a827a6536f/oauth2/v2.0/token';
 $apiUrl = 'https://api.businesscentral.dynamics.com/v2.0/49f4f8df-cda6-43d8-bc84-f4a827a6536f/RSADEV/api/HobliIT/HobliITAPI/v1.0/Companies(b86020d9-3a45-ee11-8ebc-c26f954874aa)/LSCMemAccts?$expand=LSCMemConts';
 
-// First, obtain the access token
 $requestBody = [
     'grant_type' => 'client_credentials',
     'client_id' => $clientId,
@@ -22,24 +21,19 @@ curl_setopt($tokenCh, CURLOPT_HTTPHEADER, [
     'Content-Type: application/x-www-form-urlencoded'
 ]);
 
-// Execute the cURL request to obtain the access token
 $tokenResponse = curl_exec($tokenCh);
 
-// Check for errors
 if ($tokenResponse === false) {
     $error = curl_error($tokenCh);
     echo "cURL Error: " . $error;
-    exit; // Stop further execution
+    exit;
 }
 
-// Decode the JSON response to extract the access token
 $tokenData = json_decode($tokenResponse, true);
 $accessToken = $tokenData['access_token'];
 
-// Close the cURL resource for obtaining the access token
 curl_close($tokenCh);
 
-// Define the form data
 $jsonData = null;
 if (
     isset($_POST['First_Name']) &&
@@ -48,30 +42,26 @@ if (
     isset($_POST['Mobile_Phone_No']) &&
     isset($_POST['eMail'])
 ) {
-    // Define the form data without the 'no' field
-    // $formData = array(
-    //     'accountType' => 'Private', // Account type
-    //     'lscMemConts' => array(
-    //         array(
-    //             'accountNo' => 'testjudith1',
-    //             'contactNo' => $_POST['Mobile_Phone_No'],
-    //             'name' => $_POST['First_Name'] . ' ' . $_POST['Middle_Name'] . ' ' . $_POST['Sur_Name'],
-    //             'firstName' => $_POST['First_Name'], 
-    //             'middleName' => $_POST['Middle_Name'], 
-    //             'surName' => $_POST['Sur_Name'],
-    //             'mobilePhoneNo' => $_POST['Mobile_Phone_No'], 
-    //             'eMail' => $_POST['eMail'] 
-    //         )
-    //     )
-    // );
+   
 
-
+    $counterFile = 'pnt_code.txt';
+    $counter = 0;
+    if (file_exists($counterFile)) {
+        $counter = intval(file_get_contents($counterFile));
+    }
+    
+    
+    $counter++;
+    $no = 'PNTTEST' . str_pad($counter, 5, '0', STR_PAD_LEFT);
+    
+    file_put_contents($counterFile, $counter);
+    
     $formData = array(
-        'no' => 'testjudithC', 
+        'no' => $no, 
         'accountType' => 'Private', 
         'lscMemConts' => array(
             array(
-                'accountNo' => 'testjudithC', 
+                'accountNo' => $no, 
                 'contactNo' => $_POST['Mobile_Phone_No'],
                 'name' => $_POST['First_Name'] . ' ' . $_POST['Middle_Name'] . ' ' . $_POST['Sur_Name'],
                 'firstName' => $_POST['First_Name'], 
@@ -115,4 +105,5 @@ if ($response === false) {
 }
 
 curl_close($apiCh);
+
 ?>

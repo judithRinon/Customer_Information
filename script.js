@@ -54,11 +54,11 @@ function validateSpecialCharacters(input) {
 
 /*===== Function to validate all fields before submission ===== */
 function validateForm() {
-    //var First_Name = $("#First_Name").val();
+    var First_Name = $("#First_Name").val();
     var Middle_Name = $("#Middle_Name").val();
     var Sur_Name = $("#Sur_Name").val();
 
-    if ( !validateSpecialCharacters(Middle_Name) || !validateSpecialCharacters(Sur_Name)) {
+    if ( !validateSpecialCharacters(First_Name) || !validateSpecialCharacters(Middle_Name) || !validateSpecialCharacters(Sur_Name)) {
         alert('Fields cannot contain special characters except for ñ and é.');
         return false;
     }
@@ -67,66 +67,97 @@ function validateForm() {
 
 /*===== SUBMIT BUTTON IN newPatientForm ===== */
 $(document).on('click', '#submitBtn', function() {
-
   if (!validateForm()) {
-    return;
+      return;
   }
 
   var formData = {
-    First_Name: $("#First_Name").val(),
-    Middle_Name: $("#Middle_Name").val(),
-    Sur_Name: $("#Sur_Name").val(),
-    Mobile_Phone_No: $("#Contact_Number").val(),
-    eMail: $("#Email").val(),
+      First_Name: $("#First_Name").val(),
+      Middle_Name: $("#Middle_Name").val(),
+      Sur_Name: $("#Sur_Name").val(),
+      Mobile_Phone_No: $("#Contact_Number").val(),
+      eMail: $("#Email").val(),
   };
+
   $('.popup').removeClass('active');
-  console.log($("#Contact_Number").val());
-  console.log($("#First_Name").val());
+
   $.ajax({
-    type: 'get',
-    url: 'api_get.php',
-    data: formData,
-    dataType: 'json',
-    success: function(response) {
-      console.log(response);
-      if (response.hasOwnProperty('status')) {
-        if (response.status === "exists") {
-          const recordCount = response.hasOwnProperty('recordCount') ? response.recordCount : 0;
-          if (recordCount > 1) {
-            $('#myModal2').modal('show');
+      type: 'get',
+      url: 'api_get.php',
+      data: formData,
+      dataType: 'json',
+      beforeSend: function(){
+        // Show image container
+        $("#loader").show();
+       },
+      success: function(response) {
+          console.log(response);
+          if (response.hasOwnProperty('status')) {
+              if (response.status === "exists") {
+                  const recordCount = response.hasOwnProperty('recordCount') ? response.recordCount : 0;
+                  if (recordCount > 1) {
+                      $('#myModal2').modal('show');
+                      $('#First_Name').val('');
+                      $('#Middle_Name').val('');
+                      $('#Sur_Name').val('');
+                      $('#Birthdate').val('');
+                      $('#Contact_Number').val('');
+                      $('#Email').val('');
+                  } else {
+                      $('#myModal1').modal('show');
+                      $('#modalPatientId1').val(response.patientId);
+                      $('#First_Name').val('');
+                      $('#Middle_Name').val('');
+                      $('#Sur_Name').val('');
+                      $('#Birthdate').val('');
+                      $('#Contact_Number').val('');
+                      $('#Email').val('');
+                  }
+              } else if (response.status === "not_exists") {
+                  /*===== POST API **********  ===== */
+                  $.ajax({
+                      type: 'post',
+                      url: 'api_post.php',
+                      data: formData,
+                      dataType: 'json',
+                      beforeSend: function(){
+                        // Show image container
+                        $("#loader").show();
+                       },
+                      success: function(response) {
+                          console.log(response);
+                          $('#myModal').modal('show');
+                          $('#modalPatientId').val(response.accountNo);
+                          $('#First_Name').val('');
+                          $('#Middle_Name').val('');
+                          $('#Sur_Name').val('');
+                          $('#Birthdate').val('');
+                          $('#Contact_Number').val('');
+                          $('#Email').val('');
+                      },
+                      error: function(xhr, status, error) {
+                          console.error('Error:', error);
+                          $('#myModal3').modal('show');
+                      },
+                      complete: function() {
+                        $("#loader").hide(); // Hide loading animation
+                      }
+                  });
+              }
           } else {
-            $('#myModal1').modal('show');
-            $('#modalPatientId1').val(response.patientId);
+              alert("Unexpected response format.");
           }
-        } else if (response.status === "not_exists") {
-          $.ajax({
-            type: 'post',
-            url: 'api_post.php',
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-              console.log(response);
-              $('#myModal').modal('show');
-              $('#modalPatientId').val(response.accountNo);
-            },
-            error: function(xhr, status, error) {
-              console.error('Error:', error);
-              alert('An error occurred while processing the request.');
-            }
-          });
-        }
-      } else {
-        alert("Unexpected response format.");
+      },
+      error: function(xhr, status, error) {
+          console.error('Error:', error);
+          $('#myModal3').modal('show');
+      },
+      complete: function() {
+          $("#loader").hide(); // Hide loading animation
       }
-    },
-    error: function(xhr, status, error) {
-      console.error('Error:', error);
-      alert('An error occurred while processing the request.');
-    }
   });
 });
 
-  
 /*===== ContactNumber Validation ===== */
 function validateContactNumber(input) {
     var contactNumber = input.value.replace(/\D/g, ''); // Remove non-digit characters
