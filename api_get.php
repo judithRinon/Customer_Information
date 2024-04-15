@@ -86,11 +86,6 @@ if (!empty($apiData['value'])) {
             ) {
                 $patientId = $contact['accountNo'];
                 $recordCount++;
-            } else if (
-                isset($contact['firstName']) && strtolower($contact['firstName']) === strtolower($firstName) 
-            ) {
-                $patientId = $contact['accountNo'];
-                $recordCount++;
             }
         }
     }
