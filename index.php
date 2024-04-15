@@ -27,7 +27,7 @@
     <!-- PATIENT REGISTRATION FORM -->
     <div class="container h-100" id="newPatientForm" style="display:none;">
     <div id="infoHeader" >
-            <img src="img/hobli.png" />
+            <img src="img/hobli.png" /><br>
             <p> <?php
                 date_default_timezone_set("Asia/Manila");
                 echo "Date and Time <br> " . date("m/d/Y  h:i:sa");
@@ -63,10 +63,10 @@
                     <span class="error" id="emailError" style="color: red; font-size: 12px;"></span>
                 </div>
                 <div class="d-flex justify-content-center mb-2">
-                    <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" id="confirmation">Submit</button>
+                    <button type="submit" class="btn btn-danger btn-block btn-lg" id="confirmation">Submit</button>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary btn-block btn-lg gradient-custom-4 text-body" id="backHomepage">Back</button>
+                    <button type="button" class="btn btn-dark btn-block btn-lg gradient-custom-4" id="backHomepage">Back</button>
                 </div>
             </div>
         </div>
@@ -74,48 +74,61 @@
     <!--  MODAL NEW RECORD  -->
     <div class="modal" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" id="successModal">
                 <div class="modal-header">
-                    <h5 class="modal-title">Welcome to Vision Express</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
+                    <div class="title-container" >
+                        <h5 class="modal-title">Successfully created your record!</h5>
+                    </div>
+                    <di class="btn-container">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </di>
                 </div>
-                    <h2 style="text-align:center;">We are unable to locate your record</h2>
-                    <p style="text-align:center;">we create a new record for you</p>
-                    <p style="text-align:center;">Your Patient ID is:<input type="text" id="modalPatientId" name="modalPatientId" disabled><br></p>
+                    <p style="text-align:center;">Thank you for choosing Vision Express!</p>
+                    <p style="text-align:center;">Here's your patient ID<input type="text" id="modalPatientId" name="modalPatientId" disabled><br></p>
             </div>
         </div>
     </div>
     <!--  MODAL ONE RECORD  -->
     <div class="modal" id="myModal1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" id="existingModal">
                 <div class="modal-header">
-                    <h5 class="modal-title">Woah. You have an existing record!</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
+                    <div class="title-container" >
+                        <h5 class="modal-title">You have an existing record!</h5>
+                    </div>
+                    <di class="btn-container">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </di>
                 </div>
-                    <p style="text-align:center;">Thank you for being a loyal customer/patient of Vision Express</p>
-                    <p style="text-align:center;">Here is your Patient ID for reference:<input type="text" id="modalPatientId1" name="modalPatientId" disabled><br></p>
+                    <p style="text-align:center;">Thank you for choosing Vision Express!</p>
+                    <p style="text-align:center;">Here's your patient ID<input type="text" id="modalPatientId1" name="modalPatientId" disabled><br></p>
             </div>
         </div>
     </div>
     <!--  MODAL MULTIPLE RECORD  -->
     <div class="modal" id="myModal2" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" id="multiModal">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
+                    <div class="title-container" >
+                        <img src="img/warning.png" style="width:50px;margin-top:-15px;"/>
+                        <h5 class="modal-title">Further assistance needed!</h5>
+                    </div>
+                    <di class="btn-container">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </di>
                 </div>
-                    <p style="text-align:center;">Please contact Store Personnel for further assistance</p>
+                    <p style="text-align:center;">Please approach our Store Personal for assistance.</p>
             </div>
         </div>
     </div>
-        <!--  MODAL MULTIPLE RECORD  -->
+        <!--  MODAL FOR UNABLE TO COMMUNICATE TO API   -->
     <div class="modal" id="myModal3" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -124,6 +137,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                    <img src="img/warning.png" style="width:50px;margin-top:-15px;"/>
                     <p style="text-align:center;">Our apologies that we are unable to process your request at the moment. <br>
                     Please contact Store Personnel for futher assistance.
                 </p>

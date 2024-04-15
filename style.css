@@ -25,9 +25,41 @@
   border-radius: 15px;
   margin-top: 20px;
   width:30rem;
-  margin: 0 auto;
+  margin: 0 auto 50px;
 }
 /* Modal container */
+.modal-header {
+  flex-direction: column-reverse;
+  border: none;
+  justify-content: initial;
+  align-items: normal;
+}
+
+.title-container {
+  display: flex;
+  justify-content: center;
+}
+
+input#modalPatientId1 {
+  margin-left: 10px;
+}
+input#modalPatientId {
+  margin-left: 10px;
+}
+
+
+#existingModal {
+  background: #d0e0f3;
+}
+
+#successModal {
+  background: #CDFFCD;
+}
+
+#multiModal {
+  background: #eaf2a0;
+}
+
 .modal {
   display: none; 
   position: fixed; 
@@ -145,3 +177,5 @@
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+

@@ -1,6 +1,5 @@
 <?php
 
-sleep(5); // sleep for 5 seconds
 $clientId = 'aad53ff7-dfe5-422f-ad2b-d42d9e1400ec';
 $clientSecret = 'hNH8Q~3pqrW1LXpGrMTAoUG8AaaG~zA96NoICbFW';
 $scope = 'https://api.businesscentral.dynamics.com/.default';
@@ -84,6 +83,11 @@ if (!empty($apiData['value'])) {
             } else if (
                 isset($contact['surName']) && strtolower($contact['surName']) === strtolower($surName) &&
                 isset($contact['mobilePhoneNo']) && strtolower($contact['mobilePhoneNo']) === strtolower($mobilePhoneNo)
+            ) {
+                $patientId = $contact['accountNo'];
+                $recordCount++;
+            } else if (
+                isset($contact['firstName']) && strtolower($contact['firstName']) === strtolower($firstName) 
             ) {
                 $patientId = $contact['accountNo'];
                 $recordCount++;
