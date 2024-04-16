@@ -20,7 +20,6 @@
   text-align: center;
   margin-top: 50px;
 }
-
 .card{
   border-radius: 15px;
   margin-top: 20px;
@@ -47,7 +46,6 @@ input#modalPatientId {
   margin-left: 10px;
 }
 
-
 #existingModal {
   background: #d0e0f3;
 }
@@ -60,6 +58,10 @@ input#modalPatientId {
   background: #eaf2a0;
 }
 
+#titleModal{
+  text-align:center;
+  margin-left: -11px;
+}
 .modal {
   display: none; 
   position: fixed; 
@@ -163,7 +165,7 @@ input#modalPatientId {
   background-color: black;
   z-index: 0 !important;
 }
-
+/******* Loader ******/
 #loader {
   display: none;
   position: fixed;

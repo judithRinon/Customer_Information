@@ -1,9 +1,10 @@
 <?php
-
+// Authorization ID
 $clientId = 'aad53ff7-dfe5-422f-ad2b-d42d9e1400ec';
 $clientSecret = 'hNH8Q~3pqrW1LXpGrMTAoUG8AaaG~zA96NoICbFW';
 $scope = 'https://api.businesscentral.dynamics.com/.default';
 $accessTokenUrl = 'https://login.microsoftonline.com/49f4f8df-cda6-43d8-bc84-f4a827a6536f/oauth2/v2.0/token';
+// API 
 $apiUrl = 'https://api.businesscentral.dynamics.com/v2.0/49f4f8df-cda6-43d8-bc84-f4a827a6536f/RSADEV/api/HobliIT/HobliITAPI/v1.0/Companies(b86020d9-3a45-ee11-8ebc-c26f954874aa)/LSCMemAccts?$expand=LSCMemConts';
 
 $requestBody = [
@@ -49,7 +50,6 @@ if (
     if (file_exists($counterFile)) {
         $counter = intval(file_get_contents($counterFile));
     }
-    
     
     $counter++;
     $no = 'PNTTEST' . str_pad($counter, 5, '0', STR_PAD_LEFT);

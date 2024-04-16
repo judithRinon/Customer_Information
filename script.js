@@ -13,6 +13,30 @@ document.getElementById('backHomepage').addEventListener('click', function() {
     }
 });
 
+/*===== POPUP Close button ===== */
+$('#close-popup').on('click', function() {
+    $('.popup').removeClass('active');
+});
+
+/*===== Check for special characters except ñ and é ===== */
+function validateSpecialCharacters(input) {
+    var regex = /^[a-zA-ZñÑéÉ\s]+$/;
+    return regex.test(input);
+}
+
+/*===== Function to validate all fields before submission ===== */
+function validateForm() {
+    var First_Name = $("#First_Name").val();
+    var Middle_Name = $("#Middle_Name").val();
+    var Sur_Name = $("#Sur_Name").val();
+
+    if ( !validateSpecialCharacters(First_Name) || !validateSpecialCharacters(Middle_Name) || !validateSpecialCharacters(Sur_Name)) {
+        alert('Fields cannot contain special characters except for ñ and é.');
+        return false;
+    }
+    return true;
+}
+
 /*===== SUBMIT BUTTON ===== */
 $(document).on('click', '#confirmation', function() {
     const popup = document.querySelector('.popup');
@@ -40,30 +64,6 @@ $(document).on('click', '#confirmation', function() {
         popup.classList.add('active');
     }
 });
-
-/*===== POPUP Close button ===== */
-$('#close-popup').on('click', function() {
-    $('.popup').removeClass('active');
-});
-
-/*===== Check for special characters except ñ and é ===== */
-function validateSpecialCharacters(input) {
-    var regex = /^[a-zA-ZñÑéÉ\s]+$/;
-    return regex.test(input);
-}
-
-/*===== Function to validate all fields before submission ===== */
-function validateForm() {
-    var First_Name = $("#First_Name").val();
-    var Middle_Name = $("#Middle_Name").val();
-    var Sur_Name = $("#Sur_Name").val();
-
-    if ( !validateSpecialCharacters(First_Name) || !validateSpecialCharacters(Middle_Name) || !validateSpecialCharacters(Sur_Name)) {
-        alert('Fields cannot contain special characters except for ñ and é.');
-        return false;
-    }
-    return true;
-}
 
 /*===== SUBMIT BUTTON IN newPatientForm ===== */
 $(document).on('click', '#submitBtn', function() {
@@ -97,6 +97,7 @@ $(document).on('click', '#submitBtn', function() {
                   const recordCount = response.hasOwnProperty('recordCount') ? response.recordCount : 0;
                   if (recordCount > 1) {
                       $('#myModal2').modal('show');
+                      // Clear fields
                       $('#First_Name').val('');
                       $('#Middle_Name').val('');
                       $('#Sur_Name').val('');
@@ -140,7 +141,7 @@ $(document).on('click', '#submitBtn', function() {
                           $('#myModal3').modal('show');
                       },
                       complete: function() {
-                        $("#loader").hide(); // Hide loading animation
+                        $("#loader").hide();
                       }
                   });
               }
@@ -153,7 +154,7 @@ $(document).on('click', '#submitBtn', function() {
           $('#myModal3').modal('show');
       },
       complete: function() {
-          $("#loader").hide(); // Hide loading animation
+          $("#loader").hide(); 
       }
   });
 });

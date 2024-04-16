@@ -77,7 +77,8 @@
             <div class="modal-content" id="successModal">
                 <div class="modal-header">
                     <div class="title-container" >
-                        <h5 class="modal-title">Successfully created your record!</h5>
+                       <img src="img/success.png" style="width:40px;height:40px;"/>
+                        <h5 class="modal-title" id="titleModal">Successfully created your record!</h5>
                     </div>
                     <di class="btn-container">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -96,6 +97,7 @@
             <div class="modal-content" id="existingModal">
                 <div class="modal-header">
                     <div class="title-container" >
+                    <img src="img/verified-account.png" style="width:50px;height:50px;"/>
                         <h5 class="modal-title">You have an existing record!</h5>
                     </div>
                     <di class="btn-container">
